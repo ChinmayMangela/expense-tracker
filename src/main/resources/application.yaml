@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: expense-tracker
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: ChinmayMangela
+    password: MyDbPassword@123
+
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 4001

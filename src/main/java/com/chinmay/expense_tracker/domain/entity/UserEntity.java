@@ -30,5 +30,5 @@ public class UserEntity {
     private String passwordHash;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExpenseEntity> expenses;
+    private List<ExpenseEntity> expenses = List.of();
 }

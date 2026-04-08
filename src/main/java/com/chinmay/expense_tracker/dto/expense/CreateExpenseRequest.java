@@ -2,7 +2,6 @@ package com.chinmay.expense_tracker.dto.expense;
 
 import com.chinmay.expense_tracker.domain.entity.ExpenseCategory;
 import com.chinmay.expense_tracker.domain.entity.PaymentMethod;
-import com.chinmay.expense_tracker.dto.user.UserResponse;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -2,6 +2,7 @@ package com.chinmay.expense_tracker.service;
 
 import com.chinmay.expense_tracker.domain.entity.UserEntity;
 import com.chinmay.expense_tracker.dto.user.CreateUserRequest;
+import com.chinmay.expense_tracker.dto.user.UpdateUserRequest;
 import com.chinmay.expense_tracker.dto.user.UserResponse;
 import com.chinmay.expense_tracker.exceptions.UserAlreadyExistsWithEmail;
 import com.chinmay.expense_tracker.exceptions.UserNotFoundException;
@@ -57,6 +58,24 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(id));
 
         userRepository.delete(user);
+    }
+
+
+    public UserResponse updateUser(
+            UpdateUserRequest updateUserRequest,
+            UUID id
+    ) {
+        final UserEntity userToBeUpdated = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        userRepository.findByEmail(updateUserRequest.email())
+                        .ifPresent(user -> {
+                            throw new UserAlreadyExistsWithEmail(user.getEmail());
+                        });
+        userToBeUpdated.setName(updateUserRequest.name());
+        userToBeUpdated.setEmail(updateUserRequest.email());
+        userRepository.save(userToBeUpdated);
+        return UserMapper.toResponse(userToBeUpdated);
     }
 
 

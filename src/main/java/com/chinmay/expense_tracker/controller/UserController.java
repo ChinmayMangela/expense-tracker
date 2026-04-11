@@ -2,6 +2,7 @@ package com.chinmay.expense_tracker.controller;
 
 
 import com.chinmay.expense_tracker.dto.user.CreateUserRequest;
+import com.chinmay.expense_tracker.dto.user.UpdateUserRequest;
 import com.chinmay.expense_tracker.dto.user.UserResponse;
 import com.chinmay.expense_tracker.service.UserService;
 import jakarta.validation.Valid;
@@ -46,5 +47,13 @@ public class UserController {
     ) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable UUID id,
+            @RequestBody UpdateUserRequest updateUserRequest
+            ) {
+        return ResponseEntity.ok(userService.updateUser(updateUserRequest, id));
     }
 }

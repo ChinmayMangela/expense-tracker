@@ -25,7 +25,7 @@ public class SecurityConfig {
                 // 2. Define Authorization Rules
                 .authorizeHttpRequests(auth -> auth
                         // Anyone is allowed to reach the /users endpoint (needed for sign-up/registration)
-                        .requestMatchers("/users").permitAll()
+                        .requestMatchers("/users/**").permitAll()
 
                         // For any other URL (like /expenses), the user MUST be logged in
                         .anyRequest().authenticated()
@@ -38,6 +38,9 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
+
 
 
     @Bean

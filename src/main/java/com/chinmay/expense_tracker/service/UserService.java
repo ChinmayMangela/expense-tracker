@@ -4,10 +4,13 @@ import com.chinmay.expense_tracker.config.SecurityConfig;
 import com.chinmay.expense_tracker.domain.entity.UserEntity;
 import com.chinmay.expense_tracker.dto.user.CreateUserRequest;
 import com.chinmay.expense_tracker.dto.user.UserResponse;
+import com.chinmay.expense_tracker.exceptions.UserNotFoundException;
 import com.chinmay.expense_tracker.mapper.UserMapper;
 import com.chinmay.expense_tracker.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -26,6 +29,12 @@ public class UserService {
         userEntity.setEmail(createUserRequest.email());
         userEntity.setPasswordHash(passwordEncoder.encode(createUserRequest.password()));
         final UserEntity user = userRepository.save(userEntity);
+        return UserMapper.toResponse(user);
+    }
+
+    public UserResponse fetchUserById(UUID id) {
+        final UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
         return UserMapper.toResponse(user);
     }
 

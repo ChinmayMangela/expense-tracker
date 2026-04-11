@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -23,5 +25,12 @@ public class UserController {
             @Valid @RequestBody CreateUserRequest createUserRequest
     ) {
         return new ResponseEntity<>(userService.createUser(createUserRequest), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> fetchUserById(
+            @PathVariable UUID id
+            ) {
+        return new ResponseEntity<>(userService.fetchUserById(id), HttpStatus.FOUND);
     }
 }

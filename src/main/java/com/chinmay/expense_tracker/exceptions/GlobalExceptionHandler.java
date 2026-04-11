@@ -15,7 +15,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    static ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException e) {
+    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException e) {
         return new ResponseEntity<>(
                 new ErrorResponseDto(
                         HttpStatus.NOT_FOUND.value(),
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    static ResponseEntity<ErrorResponseDto> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponseDto> handleValidationException(MethodArgumentNotValidException ex) {
         final Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(
                 error -> errors.put(error.getField(), error.getDefaultMessage())
@@ -37,6 +37,18 @@ public class GlobalExceptionHandler {
                 System.currentTimeMillis(),
                 errors
         ), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsWithEmail.class)
+    public ResponseEntity<ErrorResponseDto> handleUserExistsWithSameEmail(UserAlreadyExistsWithEmail ex) {
+        return new ResponseEntity<>(
+                new ErrorResponseDto(
+                        HttpStatus.CONFLICT.value(),
+                        ex.getMessage(),
+                        System.currentTimeMillis(),
+                        Map.of()
+                ), HttpStatus.CONFLICT
+        );
     }
 
 }

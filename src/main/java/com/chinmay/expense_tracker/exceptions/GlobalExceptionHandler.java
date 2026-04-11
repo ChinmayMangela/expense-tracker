@@ -1,0 +1,42 @@
+package com.chinmay.expense_tracker.exceptions;
+
+
+import com.chinmay.expense_tracker.dto.error.ErrorResponseDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserNotFoundException.class)
+    static ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException e) {
+        return new ResponseEntity<>(
+                new ErrorResponseDto(
+                        HttpStatus.NOT_FOUND.value(),
+                        e.getMessage(),
+                        System.currentTimeMillis(),
+                        Map.of()
+                ), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    static ResponseEntity<ErrorResponseDto> handleValidationException(MethodArgumentNotValidException ex) {
+        final Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(
+                error -> errors.put(error.getField(), error.getDefaultMessage())
+        );
+        return new ResponseEntity<>(new ErrorResponseDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                System.currentTimeMillis(),
+                errors
+        ), HttpStatus.BAD_REQUEST);
+    }
+
+}

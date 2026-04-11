@@ -50,5 +50,14 @@ public class UserService {
                 .toList();
     }
 
+    public void deleteUser(
+            UUID id
+    ) {
+        final UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        userRepository.delete(user);
+    }
+
 
 }

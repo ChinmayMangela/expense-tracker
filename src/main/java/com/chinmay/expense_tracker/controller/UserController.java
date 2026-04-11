@@ -39,4 +39,12 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> fetchAllUsers() {
         return new ResponseEntity<>(userService.fetchAllUsers(), HttpStatus.FOUND);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable UUID id
+    ) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 }

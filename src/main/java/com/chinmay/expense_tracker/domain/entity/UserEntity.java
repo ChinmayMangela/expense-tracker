@@ -4,6 +4,7 @@ package com.chinmay.expense_tracker.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,5 +31,5 @@ public class UserEntity {
     private String passwordHash;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExpenseEntity> expenses = List.of();
+    private List<ExpenseEntity> expenses = new ArrayList<>();
 }

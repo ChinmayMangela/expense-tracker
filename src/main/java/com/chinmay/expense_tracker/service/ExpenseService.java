@@ -4,10 +4,13 @@ package com.chinmay.expense_tracker.service;
 import com.chinmay.expense_tracker.domain.entity.ExpenseEntity;
 import com.chinmay.expense_tracker.dto.expense.CreateExpenseRequest;
 import com.chinmay.expense_tracker.dto.expense.ExpenseResponse;
+import com.chinmay.expense_tracker.dto.expense.PatchExpenseRequest;
+import com.chinmay.expense_tracker.dto.expense.UpdateExpenseRequest;
 import com.chinmay.expense_tracker.exceptions.ExpenseNotFoundException;
 import com.chinmay.expense_tracker.mapper.ExpenseMapper;
 import com.chinmay.expense_tracker.mapper.UserMapper;
 import com.chinmay.expense_tracker.repository.ExpenseRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,5 +58,57 @@ public class ExpenseService {
                 .stream()
                 .map(ExpenseMapper::toResponse)
                 .toList();
+    }
+
+    public void deleteExpense(
+            UUID id
+    ) {
+        final ExpenseEntity expenseToBeDelete = expenseRepository.findById(id)
+                .orElseThrow(() -> new ExpenseNotFoundException(id));
+
+        expenseRepository.delete(expenseToBeDelete);
+    }
+
+    public ExpenseResponse updateExpensePatch(
+            PatchExpenseRequest patchExpenseRequest,
+            UUID id
+    ) {
+        final ExpenseEntity expenseToBeUpdate = expenseRepository.findById(id)
+                .orElseThrow(() -> new ExpenseNotFoundException(id));
+
+        if(patchExpenseRequest.paymentDescription() != null) {
+            expenseToBeUpdate.setPaymentDescription(patchExpenseRequest.paymentDescription());
+        }
+
+        if(patchExpenseRequest.amount() != null) {
+            expenseToBeUpdate.setAmount(patchExpenseRequest.amount());
+        }
+
+        if(patchExpenseRequest.paymentMethod() != null) {
+            expenseToBeUpdate.setPaymentMethod(patchExpenseRequest.paymentMethod());
+        }
+
+        if(patchExpenseRequest.category() != null) {
+            expenseToBeUpdate.setCategory(patchExpenseRequest.category());
+        }
+
+        expenseRepository.save(expenseToBeUpdate);
+        return ExpenseMapper.toResponse(expenseToBeUpdate);
+    }
+
+    public ExpenseResponse updateExpensePut(
+            UpdateExpenseRequest request,
+            UUID id
+    ) {
+        final ExpenseEntity expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new ExpenseNotFoundException(id));
+
+        expense.setPaymentDescription(request.paymentDescription());
+        expense.setAmount(request.amount());
+        expense.setPaymentMethod(request.paymentMethod());
+        expense.setCategory(request.category());
+
+        expenseRepository.save(expense);
+        return ExpenseMapper.toResponse(expense);
     }
 }

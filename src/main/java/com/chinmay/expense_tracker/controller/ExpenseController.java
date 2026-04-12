@@ -3,6 +3,8 @@ package com.chinmay.expense_tracker.controller;
 
 import com.chinmay.expense_tracker.dto.expense.CreateExpenseRequest;
 import com.chinmay.expense_tracker.dto.expense.ExpenseResponse;
+import com.chinmay.expense_tracker.dto.expense.PatchExpenseRequest;
+import com.chinmay.expense_tracker.dto.expense.UpdateExpenseRequest;
 import com.chinmay.expense_tracker.service.ExpenseService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +39,29 @@ public class ExpenseController {
     @GetMapping
     public ResponseEntity<List<ExpenseResponse>> fetchAllExpenses() {
         return ResponseEntity.ok(expenseService.fetchAllExpenses());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteExpense(
+            @PathVariable UUID id
+    ) {
+        expenseService.deleteExpense(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ExpenseResponse> updateExpensePut(
+            @Valid @RequestBody UpdateExpenseRequest updateExpenseRequest,
+            @PathVariable UUID id
+            ) {
+        return ResponseEntity.ok(expenseService.updateExpensePut(updateExpenseRequest, id));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ExpenseResponse> updateExpensePatch(
+            @Valid @RequestBody PatchExpenseRequest patchExpenseRequest,
+            @PathVariable UUID id
+    ) {
+        return ResponseEntity.ok(expenseService.updateExpensePatch(patchExpenseRequest, id));
     }
 }

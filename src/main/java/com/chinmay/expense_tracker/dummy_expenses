@@ -1,0 +1,72 @@
+[
+  {
+    "paymentDescription": "Monthly house rent",
+    "amount": 15000.00,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "BANK_TRANSFER",
+    "category": "RENT"
+  },
+  {
+    "paymentDescription": "Electricity and water bill",
+    "amount": 3200.50,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "UPI",
+    "category": "UTILITIES"
+  },
+  {
+    "paymentDescription": "Facebook ads campaign",
+    "amount": 5000.00,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "CREDIT_CARD",
+    "category": "MARKETING"
+  },
+  {
+    "paymentDescription": "AWS cloud hosting charges",
+    "amount": 7200.75,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "CREDIT_CARD",
+    "category": "TECHNOLOGY"
+  },
+  {
+    "paymentDescription": "Flight tickets for business trip",
+    "amount": 18500.00,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "DEBIT_CARD",
+    "category": "TRAVEL"
+  },
+  {
+    "paymentDescription": "Team lunch at restaurant",
+    "amount": 2200.00,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "CASH",
+    "category": "MEALS"
+  },
+  {
+    "paymentDescription": "Legal consultation fees",
+    "amount": 10000.00,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "BANK_TRANSFER",
+    "category": "PROFESSIONAL_FEES"
+  },
+  {
+    "paymentDescription": "Office stationery purchase",
+    "amount": 850.25,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "CASH",
+    "category": "OFFICE_SUPPLIES"
+  },
+  {
+    "paymentDescription": "Printer repair service",
+    "amount": 1500.00,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "CHEQUES",
+    "category": "OTHER"
+  },
+  {
+    "paymentDescription": "Miscellaneous expense",
+    "amount": 300.00,
+    "userId": "22222222-2222-2222-2222-222222222222",
+    "paymentMethod": "OTHER",
+    "category": "OTHER"
+  }
+]

@@ -51,4 +51,16 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(ExpenseNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleExpenseNotFoundException(ExpenseNotFoundException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponseDto(
+                        HttpStatus.NOT_FOUND.value(),
+                        ex.getMessage(),
+                        System.currentTimeMillis(),
+                        Map.of()
+                ), HttpStatus.NOT_FOUND
+        );
+    }
+
 }

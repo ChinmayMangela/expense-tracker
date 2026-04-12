@@ -6,10 +6,9 @@ import com.chinmay.expense_tracker.dto.expense.ExpenseResponse;
 import com.chinmay.expense_tracker.service.ExpenseService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/expenses")
@@ -25,5 +24,12 @@ public class ExpenseController {
             @Valid @RequestBody CreateExpenseRequest createExpenseRequest
     ) {
         return ResponseEntity.ok(expenseService.createExpense(createExpenseRequest));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ExpenseResponse> fetchExpenseById(
+            @PathVariable UUID id
+            ) {
+        return ResponseEntity.ok(expenseService.fetchExpenseById(id));
     }
 }

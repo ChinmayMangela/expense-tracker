@@ -4,10 +4,13 @@ package com.chinmay.expense_tracker.service;
 import com.chinmay.expense_tracker.domain.entity.ExpenseEntity;
 import com.chinmay.expense_tracker.dto.expense.CreateExpenseRequest;
 import com.chinmay.expense_tracker.dto.expense.ExpenseResponse;
+import com.chinmay.expense_tracker.exceptions.ExpenseNotFoundException;
 import com.chinmay.expense_tracker.mapper.ExpenseMapper;
 import com.chinmay.expense_tracker.mapper.UserMapper;
 import com.chinmay.expense_tracker.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class ExpenseService {
@@ -33,5 +36,16 @@ public class ExpenseService {
         expenseEntity.setCategory(createExpenseRequest.category());
         expenseRepository.save(expenseEntity);
         return ExpenseMapper.toResponse(expenseEntity);
+    }
+
+    public ExpenseResponse fetchExpenseById(
+            UUID id
+    ) {
+        final ExpenseEntity expense = expenseRepository
+                .findById(id)
+                .orElseThrow(() -> new ExpenseNotFoundException(id));
+
+        return ExpenseMapper.toResponse(expense);
+
     }
 }

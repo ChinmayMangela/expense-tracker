@@ -66,6 +66,7 @@ public class UserService {
             UUID id
     ) {
         final UserEntity userToBeUpdated = userRepository.findById(id)
+                .filter(user -> !user.getId().equals(id))
                 .orElseThrow(() -> new UserNotFoundException(id));
 
         userRepository.findByEmail(updateUserRequest.email())

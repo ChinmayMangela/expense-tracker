@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Anyone is allowed to reach the /users endpoint (needed for sign-up/registration)
                         .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/expenses/**").permitAll()
 
                         // For any other URL (like /expenses), the user MUST be logged in
                         .anyRequest().authenticated()

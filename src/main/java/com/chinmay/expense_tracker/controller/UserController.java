@@ -26,19 +26,19 @@ public class UserController {
     public ResponseEntity<UserResponse> createUser(
             @Valid @RequestBody CreateUserRequest createUserRequest
     ) {
-        return new ResponseEntity<>(userService.createUser(createUserRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.createUser(createUserRequest), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> fetchUserById(
             @PathVariable UUID id
             ) {
-        return new ResponseEntity<>(userService.fetchUserById(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(userService.fetchUserById(id), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> fetchAllUsers() {
-        return new ResponseEntity<>(userService.fetchAllUsers(), HttpStatus.FOUND);
+        return new ResponseEntity<>(userService.fetchAllUsers(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -52,7 +52,7 @@ public class UserController {
     @PatchMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable UUID id,
-            @RequestBody UpdateUserRequest updateUserRequest
+            @Valid @RequestBody UpdateUserRequest updateUserRequest
             ) {
         return ResponseEntity.ok(userService.updateUser(updateUserRequest, id));
     }

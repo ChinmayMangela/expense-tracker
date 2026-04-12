@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -31,5 +32,10 @@ public class ExpenseController {
             @PathVariable UUID id
             ) {
         return ResponseEntity.ok(expenseService.fetchExpenseById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExpenseResponse>> fetchAllExpenses() {
+        return ResponseEntity.ok(expenseService.fetchAllExpenses());
     }
 }

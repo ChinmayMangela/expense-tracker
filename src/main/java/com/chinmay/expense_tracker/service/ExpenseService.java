@@ -10,6 +10,7 @@ import com.chinmay.expense_tracker.mapper.UserMapper;
 import com.chinmay.expense_tracker.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -47,5 +48,12 @@ public class ExpenseService {
 
         return ExpenseMapper.toResponse(expense);
 
+    }
+
+    public List<ExpenseResponse> fetchAllExpenses() {
+        return expenseRepository.findAll()
+                .stream()
+                .map(ExpenseMapper::toResponse)
+                .toList();
     }
 }

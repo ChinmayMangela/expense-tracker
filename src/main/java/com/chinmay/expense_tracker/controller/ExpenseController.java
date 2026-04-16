@@ -1,10 +1,7 @@
 package com.chinmay.expense_tracker.controller;
 
 
-import com.chinmay.expense_tracker.dto.expense.CreateExpenseRequest;
-import com.chinmay.expense_tracker.dto.expense.ExpenseResponse;
-import com.chinmay.expense_tracker.dto.expense.PatchExpenseRequest;
-import com.chinmay.expense_tracker.dto.expense.UpdateExpenseRequest;
+import com.chinmay.expense_tracker.dto.expense.*;
 import com.chinmay.expense_tracker.service.ExpenseService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +60,12 @@ public class ExpenseController {
             @PathVariable UUID id
     ) {
         return ResponseEntity.ok(expenseService.updateExpensePatch(patchExpenseRequest, id));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<ExpenseSummaryResponse> fetchSummary(
+            @RequestParam UUID id
+    ) {
+        return ResponseEntity.ok(expenseService.fetchExpensesSummary(id));
     }
 }

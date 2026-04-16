@@ -8,6 +8,7 @@ import com.chinmay.expense_tracker.exceptions.UserAlreadyExistsWithEmail;
 import com.chinmay.expense_tracker.exceptions.UserNotFoundException;
 import com.chinmay.expense_tracker.mapper.UserMapper;
 import com.chinmay.expense_tracker.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -66,10 +68,10 @@ public class UserService {
             UUID id
     ) {
         final UserEntity userToBeUpdated = userRepository.findById(id)
-                .filter(user -> !user.getId().equals(id))
                 .orElseThrow(() -> new UserNotFoundException(id));
 
         userRepository.findByEmail(updateUserRequest.email())
+                .filter(user -> !user.getId().equals(id))
                         .ifPresent(user -> {
                             throw new UserAlreadyExistsWithEmail(user.getEmail());
                         });

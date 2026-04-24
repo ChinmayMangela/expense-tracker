@@ -1,7 +1,6 @@
 package com.chinmay.expense_tracker.service;
 
 
-import com.chinmay.expense_tracker.controller.ExpenseController;
 import com.chinmay.expense_tracker.domain.entity.ExpenseCategory;
 import com.chinmay.expense_tracker.domain.entity.ExpenseEntity;
 import com.chinmay.expense_tracker.dto.expense.*;
@@ -9,9 +8,12 @@ import com.chinmay.expense_tracker.exceptions.ExpenseNotFoundException;
 import com.chinmay.expense_tracker.mapper.ExpenseMapper;
 import com.chinmay.expense_tracker.mapper.UserMapper;
 import com.chinmay.expense_tracker.repository.ExpenseRepository;
+import com.chinmay.expense_tracker.specifications.ExpenseSpecifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Service
@@ -115,21 +117,41 @@ public class ExpenseService {
         userService.fetchUserById(id);
 
         final Map<ExpenseCategory, BigDecimal> categoryBreakdownMap = new HashMap<>();
+        final List<Object[]> result = expenseRepository.fetchExpenseSummary(id);
         BigDecimal totalSpent = BigDecimal.ZERO;
 
-        final List<Object[]> rows = expenseRepository.fetchExpenseSummary(id);
-
-        for (Object[] row: rows) {
-            ExpenseCategory category = (ExpenseCategory) row[0];
+        for (Object[] row : result) {
+            final ExpenseCategory category = (ExpenseCategory) row[0];
             BigDecimal sum = (BigDecimal) row[1];
 
             categoryBreakdownMap.put(category, sum);
-
             totalSpent = totalSpent.add(sum);
 
         }
 
         return new ExpenseSummaryResponse(totalSpent, categoryBreakdownMap);
+    }
+
+
+    public List<ExpenseResponse> searchExpenses(
+            BigDecimal amount,
+            String description,
+            UUID userId,
+            OffsetDateTime startDate,
+            OffsetDateTime endDate
+    ) {
+        userService.fetchUserById(userId);
+        Specification<ExpenseEntity> expenseEntitySpecification = Specification
+                .where(ExpenseSpecifications.hasMinimumAmount(amount))
+                .and(ExpenseSpecifications.hasDescriptionContaining(description))
+                .and(ExpenseSpecifications.hasUserId(userId))
+                .and(ExpenseSpecifications.isBetweenDates(startDate, endDate));
+
+        return expenseRepository
+                .findAll(expenseEntitySpecification)
+                .stream()
+                .map(ExpenseMapper::toResponse)
+                .toList();
     }
 
 }

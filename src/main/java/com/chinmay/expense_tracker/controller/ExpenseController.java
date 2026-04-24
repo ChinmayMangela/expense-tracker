@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +31,7 @@ public class ExpenseController {
     @GetMapping("/{id}")
     public ResponseEntity<ExpenseResponse> fetchExpenseById(
             @PathVariable UUID id
-            ) {
+    ) {
         return ResponseEntity.ok(expenseService.fetchExpenseById(id));
     }
 
@@ -50,7 +52,7 @@ public class ExpenseController {
     public ResponseEntity<ExpenseResponse> updateExpensePut(
             @Valid @RequestBody UpdateExpenseRequest updateExpenseRequest,
             @PathVariable UUID id
-            ) {
+    ) {
         return ResponseEntity.ok(expenseService.updateExpensePut(updateExpenseRequest, id));
     }
 
@@ -68,4 +70,18 @@ public class ExpenseController {
     ) {
         return ResponseEntity.ok(expenseService.fetchExpensesSummary(id));
     }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ExpenseResponse>> searchExpense(
+            @RequestParam(required = false) BigDecimal amount,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) UUID userId,
+            @RequestParam(required = false) OffsetDateTime startDate,
+            @RequestParam(required = false) OffsetDateTime endDate
+    ) {
+        return ResponseEntity.ok(expenseService.searchExpenses(amount, description, userId, startDate, endDate));
+    }
+
+
 }

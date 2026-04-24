@@ -23,14 +23,14 @@
   {
     "paymentDescription": "AWS cloud hosting charges",
     "amount": 7200.75,
-    "userId": "22222222-2222-2222-2222-222222222222",
+    "userId": "d4dbd494-11fd-4d62-9468-a31273c41181",
     "paymentMethod": "CREDIT_CARD",
     "category": "TECHNOLOGY"
   },
   {
     "paymentDescription": "Flight tickets for business trip",
     "amount": 18500.00,
-    "userId": "22222222-2222-2222-2222-222222222222",
+    "userId": "d4dbd494-11fd-4d62-9468-a31273c41181",
     "paymentMethod": "DEBIT_CARD",
     "category": "TRAVEL"
   },

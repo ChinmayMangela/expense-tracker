@@ -1,5 +1,4 @@
 package com.chinmay.expense_tracker.service;
-
 import com.chinmay.expense_tracker.domain.entity.UserEntity;
 import com.chinmay.expense_tracker.dto.user.CreateUserRequest;
 import com.chinmay.expense_tracker.dto.user.UpdateUserRequest;
@@ -9,10 +8,9 @@ import com.chinmay.expense_tracker.exceptions.UserNotFoundException;
 import com.chinmay.expense_tracker.mapper.UserMapper;
 import com.chinmay.expense_tracker.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,8 +45,12 @@ public class UserService {
         return UserMapper.toResponse(user);
     }
 
-    public List<UserResponse> fetchAllUsers() {
-        return userRepository.findAll()
+    public List<UserResponse> fetchAllUsers(
+            int page,
+            int size
+    ) {
+        final PageRequest pageRequest = PageRequest.of(page, size);
+        return userRepository.findAll(pageRequest)
                 .stream()
                 .map(UserMapper::toResponse)
                 .toList();
@@ -81,8 +83,4 @@ public class UserService {
         userRepository.save(userToBeUpdated);
         return UserMapper.toResponse(userToBeUpdated);
     }
-
-
-
-
 }

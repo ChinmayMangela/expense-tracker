@@ -36,8 +36,13 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ExpenseResponse>> fetchAllExpenses() {
-        return ResponseEntity.ok(expenseService.fetchAllExpenses());
+    public ResponseEntity<List<ExpenseResponse>> fetchAllExpenses(
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "5") int size
+    ) {
+        return ResponseEntity.ok(expenseService.fetchAllExpenses(
+                page - 1, size
+        ));
     }
 
     @DeleteMapping("/{id}")
@@ -78,9 +83,11 @@ public class ExpenseController {
             @RequestParam(required = false) String description,
             @RequestParam(required = false) UUID userId,
             @RequestParam(required = false) OffsetDateTime startDate,
-            @RequestParam(required = false) OffsetDateTime endDate
+            @RequestParam(required = false) OffsetDateTime endDate,
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "5") int size
     ) {
-        return ResponseEntity.ok(expenseService.searchExpenses(amount, description, userId, startDate, endDate));
+        return ResponseEntity.ok(expenseService.searchExpenses(amount, description, userId, startDate, endDate, page - 1, size));
     }
 
 

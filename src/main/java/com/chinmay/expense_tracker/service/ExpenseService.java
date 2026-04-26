@@ -9,6 +9,7 @@ import com.chinmay.expense_tracker.mapper.ExpenseMapper;
 import com.chinmay.expense_tracker.mapper.UserMapper;
 import com.chinmay.expense_tracker.repository.ExpenseRepository;
 import com.chinmay.expense_tracker.specifications.ExpenseSpecifications;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -53,8 +54,12 @@ public class ExpenseService {
 
     }
 
-    public List<ExpenseResponse> fetchAllExpenses() {
-        return expenseRepository.findAll()
+    public List<ExpenseResponse> fetchAllExpenses(
+            int page,
+            int size
+    ) {
+        final PageRequest pageRequest = PageRequest.of(page, size);
+        return expenseRepository.findAll(pageRequest)
                 .stream()
                 .map(ExpenseMapper::toResponse)
                 .toList();
@@ -138,7 +143,9 @@ public class ExpenseService {
             String description,
             UUID userId,
             OffsetDateTime startDate,
-            OffsetDateTime endDate
+            OffsetDateTime endDate,
+            int page,
+            int size
     ) {
         userService.fetchUserById(userId);
         Specification<ExpenseEntity> expenseEntitySpecification = Specification
@@ -147,8 +154,9 @@ public class ExpenseService {
                 .and(ExpenseSpecifications.hasUserId(userId))
                 .and(ExpenseSpecifications.isBetweenDates(startDate, endDate));
 
+        final PageRequest pageRequest = PageRequest.of(page, size);
         return expenseRepository
-                .findAll(expenseEntitySpecification)
+                .findAll(expenseEntitySpecification, pageRequest)
                 .stream()
                 .map(ExpenseMapper::toResponse)
                 .toList();

@@ -37,8 +37,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> fetchAllUsers() {
-        return new ResponseEntity<>(userService.fetchAllUsers(), HttpStatus.OK);
+    public ResponseEntity<List<UserResponse>> fetchAllUsers(
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "5") int size
+    ) {
+        return new ResponseEntity<>(userService.fetchAllUsers(
+                page - 1, size
+        ), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
